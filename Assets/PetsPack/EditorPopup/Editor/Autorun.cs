@@ -128,7 +128,7 @@ namespace AppAdvisory.PetsSpriteMegaPack
 
 			if(count == 10 || count == 30 || count == 50 || count == 80 || count == 100)
 			{
-				Application.OpenURL("http://u3d.as/oWD");
+//				Application.OpenURL("http://u3d.as/oWD");
 			}
 
 			EditorPrefs.SetInt(Welcome.PREFSHOWATSTARTUP + "autoshow", count + 1);

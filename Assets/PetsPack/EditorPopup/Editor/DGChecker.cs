@@ -119,7 +119,7 @@ namespace AppAdvisory.PetsSpriteMegaPack
 
 			if(GUILayout.Button("GET\nDOTWEEN\n(it's free)",  GUILayout.Width(100), GUILayout.Height(50)))
 			{
-				Application.OpenURL("http://u3d.as/aZ1");
+//				Application.OpenURL("http://u3d.as/aZ1");
 			}
 		}
 
