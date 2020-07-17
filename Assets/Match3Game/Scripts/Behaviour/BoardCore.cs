@@ -33,11 +33,11 @@ namespace Match3Game.Scripts.Behaviour
         /// </summary>
         private void PrepareSeed()
         {
-            var seed = GetSeed();
-            _random = new System.Random(seed.GetHashCode());
+            var seed = GetSeed();//TODO aplicar seed depois que tudo funcionar
+            _random = new System.Random();
 
             CreateBoard();
-//            AvoidInitialMatches();
+            //AvoidInitialMatches();
             ShowBoard();
         }
 
@@ -62,42 +62,55 @@ namespace Match3Game.Scripts.Behaviour
         /// </summary>
         private void AvoidInitialMatches()
         {
-            var removeList = new List<BoardSlotOption>();
+            List<BoardSlotOption> remove;
             
-            for (var i = 0; i < Width; i++)
+            for (var x = 0; x < Width; x++)
             {
-                for (var j = 0; j < Height; j++)
+                for (var y = 0; y < Height; y++)
                 {
-                    var boardPoint = new BoardPoint(i, j);
+                    var boardPoint = new BoardPoint(x, y);
                     var curAnimal = GetBoardPointAnimal(boardPoint);
+                    if(curAnimal <= 0) continue;
 
-                    removeList = new List<BoardSlotOption>();
-                    while (Connected(boardPoint, true).Count > 0)
+                    remove = new List<BoardSlotOption>();
+                    var connects = Connected(boardPoint, true);
+                    while (connects.Count > 0)
                     {
                         curAnimal = GetBoardPointAnimal(boardPoint);
-                        if(!removeList.Contains(curAnimal))
-                            removeList.Add(curAnimal);
-                        SetBoardPointAnimal(boardPoint, NewValue(ref removeList));
+                        if(!remove.Contains(curAnimal))
+                            remove.Add(curAnimal);
+                        SetBoardPointAnimal(boardPoint, NewValue(ref remove));
                     }
                 }
             }
         }
 
+        /// <summary>
+        /// Creates all the visual parts of the board
+        /// </summary>
         private void ShowBoard()
         {
-            for (var i = 0; i < Width; i++)
+            for (var x = 0; x < Width; x++)
             {
-                for (var j = 0; j < Height; j++)
+                for (var y = 0; y < Height; y++)
                 {
-                    var curAnimal = _boardSlots[i, j].curValue;
+                    var curAnimal = _boardSlots[x, y].curValue;
                     
                     if(curAnimal == BoardSlotOption.Undefined || curAnimal == BoardSlotOption.Empty) continue;
 
                     var boardPointCreated = Instantiate(animalPrefab, boardHolder);
                     var rect = boardPointCreated.GetComponent<RectTransform>();
-                    rect.anchoredPosition = new Vector2(32 + (64 * i), -32 - (64 * j));
+                    rect.anchoredPosition = new Vector2(32 + (64 * x), -32 - (64 * y));
+
+                    var pointBehaviour = boardPointCreated.GetComponent<BoardSlotBehaviour>();
+                    pointBehaviour.InitializeSlot(GetSpriteByAnimal(curAnimal));
                 }
             }
+        }
+
+        private Sprite GetSpriteByAnimal(BoardSlotOption boardSlotOption)
+        {
+            return boardPieces.First(bp => bp.slotOption == boardSlotOption).slotSprite;
         }
 
         /// <summary>
@@ -147,16 +160,16 @@ namespace Match3Game.Scripts.Behaviour
                 var same = 0;
                 BoardPoint[] check =
                 {
-                    BoardPoint.Sum(boardPoint, directions[i]), 
+                    BoardPoint.Sum(boardPoint, directions[i]),
                     BoardPoint.Sum(boardPoint, directions[i + 2])
                 };
-                
+
                 //Here checking if both sides of the slot are the same, if so, add then to the list
-                foreach (var point in check)
+                foreach (var next in check)
                 {
-                    if (GetBoardPointAnimal(point) == curAnimal)
+                    if (GetBoardPointAnimal(next) == curAnimal)
                     {
-                        line.Add(point);
+                        line.Add(next);
                         same++;
                     }
                 }
@@ -269,8 +282,10 @@ namespace Match3Game.Scripts.Behaviour
         /// <returns></returns>
         private BoardSlotOption GetSlotOption(int y, int x)
         {
-            return boardLayout.rows[y].row[x] ? BoardSlotOption.Undefined : (BoardSlotOption) (Random.Range(0,
-                boardPieces.Length - 1));
+            var slotValue = boardLayout.rows[y].row[x] ? -1 : (Random.Range(1,
+                boardPieces.Length + 1));
+
+            return (BoardSlotOption)slotValue;
         }
 
         /// <summary>

@@ -478,26 +478,26 @@ MonoBehaviour:
     - row: 000000000000000000
     - row: 000000000000000000
     - row: 000000000000000000
-    - row: 000000000000000000
-    - row: 000000000000000000
-    - row: 000000000000000000
-    - row: 000000000000000000
-    - row: 000000000000000000
-    - row: 000000000000000000
-    - row: 000000000000000000
-    - row: 000000000000000000
-    - row: 000000000000000000
-    - row: 000000000000000000
-    - row: 000000000000000000
+    - row: 000000010101000000
+    - row: 000000010001000000
+    - row: 000000010001000000
+    - row: 000000010001000000
+    - row: 000000010001000000
+    - row: 000000010001000000
+    - row: 000000010001000000
+    - row: 000000010101000000
+    - row: 000000000100000000
+    - row: 000000000100000000
+    - row: 000000000100000000
   boardPieces:
   - slotOption: 1
-    slotSprite: {fileID: 21300000, guid: 343100d7d06a9db4c9cbb8749a363e82, type: 3}
+    slotSprite: {fileID: 21300000, guid: 2f9d54401116eef4d9dbdfa72899ff8d, type: 3}
   - slotOption: 2
-    slotSprite: {fileID: 21300000, guid: 952e0a082b5c0404ca9c5b9c4dfb8622, type: 3}
+    slotSprite: {fileID: 21300000, guid: ac4e4b142225f994ab59a73d61b8a104, type: 3}
   - slotOption: 3
-    slotSprite: {fileID: 21300000, guid: 84b33117778d73e468c694c71b4a0994, type: 3}
+    slotSprite: {fileID: 21300000, guid: f028ef29f7b233b4e96bea54b1d43361, type: 3}
   - slotOption: 4
-    slotSprite: {fileID: 21300000, guid: b3b09497cc899764897ab8367f156ab6, type: 3}
+    slotSprite: {fileID: 21300000, guid: 0e210ef5ed9726c4c82ae5e8e1159dde, type: 3}
   - slotOption: 5
     slotSprite: {fileID: 21300000, guid: 69791a9266803c746a1e3fde8bbd0b05, type: 3}
   boardHolder: {fileID: 1019283233}
