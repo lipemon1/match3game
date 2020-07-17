@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
@@ -267,8 +267,11 @@ namespace Match3Game.Scripts.Behaviour
             for (var i = 0; i < boardPieces.Length; i++)
                 available.Add((BoardSlotOption)i + 1);
 
-            foreach (var slotOption in available)
+            for (var i = 0; i < available.Count; i++)
+            {
+                var slotOption = available[i];
                 available.Remove(slotOption);
+            }
 
             if (available.Count <= 0) return (BoardSlotOption)0;
             return available[_random.Next(0, available.Count)];
