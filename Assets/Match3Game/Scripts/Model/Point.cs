@@ -35,7 +35,7 @@ namespace Match3Game.Scripts.Model
         {
             return new Point(point.x * multiplier, point.y * multiplier);
         }
-        
+
         public void Sum(Point first)
         {
             x += first.x;

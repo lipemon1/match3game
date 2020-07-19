@@ -8,12 +8,11 @@ namespace Match3Game.Scripts.Behaviours.Audio
     {
         public static SfxPlayer Instance { get; set; }
 
-        [Header("Game Configuration")] 
-        [SerializeField] private GameConfig gameConfig;
+        [Header("Game Configuration")] [SerializeField]
+        private GameConfig gameConfig;
 
-        [Header("Audio")] 
-        [SerializeField] private AudioSource audioSource;
-        
+        [Header("Audio")] [SerializeField] private AudioSource audioSource;
+
         private void Awake()
         {
             if (Instance == null)

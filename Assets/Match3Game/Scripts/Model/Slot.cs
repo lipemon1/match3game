@@ -11,7 +11,7 @@ namespace Match3Game.Scripts.Model
 
         public Slot(int animal, Point i)
         {
-            this.animal = (AnimalType)animal;
+            this.animal = (AnimalType) animal;
             index = i;
         }
 

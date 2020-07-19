@@ -14,7 +14,7 @@ namespace Match3Game.Scripts.Behaviours.Swap
             Drag,
             Click
         }
-        
+
         [System.Serializable]
         public class AnimalSlotRandomDirection
         {
@@ -23,31 +23,32 @@ namespace Match3Game.Scripts.Behaviours.Swap
             public List<int> allDirectionAvailable = new List<int>();
             public int nextDir;
         }
-        
+
         public static AnimalSwap instance;
 
-        [Header("References Needed")] 
-        [SerializeField] private GameConfig gameConfig;
+        [Header("References Needed")] [SerializeField]
+        private GameConfig gameConfig;
+
         [SerializeField] private BoardCore gameBoard;
 
-        [Header("Swap Mode")] 
-        private SwapType _curSwapMode;
+        [Header("Swap Mode")] private SwapType _curSwapMode;
 
         [Header("Variables for Swap Change")] //this variables will make our swap works
         private AnimalSlot _animalSlotDragMoving;
+
         private Vector2 _mouseStart;
 
-        [Header("Variables for Click Change")] 
-        private AnimalSlot _animalSlotClickMoving;
+        [Header("Variables for Click Change")] private AnimalSlot _animalSlotClickMoving;
 
         [Header("Possible stats")] //those one will handle our click or possible swap
         private AnimalSlot _possibleAnimalSlotMoving;
+
         private Vector2 _possibleMouseStart;
         private Point _newIndex;
         private bool _isSwaping;
 
-        [Header("Random Direction Variables")] 
-        [SerializeField] private AnimalSlotRandomDirection curAnimalDirections;
+        [Header("Random Direction Variables")] [SerializeField]
+        private AnimalSlotRandomDirection curAnimalDirections;
 
         private void Awake()
         {
@@ -58,7 +59,7 @@ namespace Match3Game.Scripts.Behaviours.Swap
         {
             if (_possibleAnimalSlotMoving != null)
             {
-                var possibleDir = ((Vector2)Input.mousePosition - _possibleMouseStart);
+                var possibleDir = ((Vector2) Input.mousePosition - _possibleMouseStart);
                 var dirMagnitude = possibleDir.magnitude;
                 if (dirMagnitude > gameConfig.SwapThreshold)
                 {
@@ -70,7 +71,7 @@ namespace Match3Game.Scripts.Behaviours.Swap
             }
 
             if (_curSwapMode == SwapType.Drag)
-                SwapAnimalByDrag();    
+                SwapAnimalByDrag();
         }
 
         #region Click Events
@@ -82,14 +83,14 @@ namespace Match3Game.Scripts.Behaviours.Swap
         public void OnAnimalClickDown(AnimalSlot animalSlot)
         {
             _curSwapMode = SwapType.Click;
-            
+
             UpdateCurAnimalDirections(animalSlot);
-            
+
             if (_possibleAnimalSlotMoving != null) return;
             _possibleAnimalSlotMoving = animalSlot;
             _possibleMouseStart = Input.mousePosition;
         }
-        
+
         /// <summary>
         /// Drop our animal for swap, if it was a click swap, it will be called the same way
         /// </summary>
@@ -99,26 +100,26 @@ namespace Match3Game.Scripts.Behaviours.Swap
             {
                 //checking if we have a animal to move using swap
                 if (_animalSlotDragMoving == null) return;
-            
+
                 if (!_newIndex.Equals(_animalSlotDragMoving.index))
                     gameBoard.FlipPieces(_animalSlotDragMoving.index, _newIndex, true);
                 else
                     gameBoard.ResetPiece(_animalSlotDragMoving);
-                _animalSlotDragMoving = null;   
+                _animalSlotDragMoving = null;
             }
             else
             {
                 //checking if we have a animal to move using click
                 if (_animalSlotClickMoving == null) return;
-            
+
                 if (!_newIndex.Equals(_animalSlotClickMoving.index))
                     gameBoard.FlipPieces(_animalSlotClickMoving.index, _newIndex, true);
                 else
                     gameBoard.ResetPiece(_animalSlotClickMoving);
-                _animalSlotClickMoving = null;   
+                _animalSlotClickMoving = null;
             }
         }
-        
+
         /// <summary>
         /// Called when we do a full click, so it is called also when we do a OnPointerUp event
         /// </summary>
@@ -133,15 +134,15 @@ namespace Match3Game.Scripts.Behaviours.Swap
             if (_possibleAnimalSlotMoving == null && _animalSlotDragMoving == null)
             {
                 _animalSlotClickMoving = animalSlot;
-                _curSwapMode = SwapType.Click;       
+                _curSwapMode = SwapType.Click;
                 SwapAnimalByClick();
             }
         }
-        
+
         #endregion
 
         #region Swaps Methods
-        
+
         /// <summary>
         /// Called to afirm that we are dealing with a drag swap
         /// </summary>
@@ -150,7 +151,7 @@ namespace Match3Game.Scripts.Behaviours.Swap
         private void EnableSwap(AnimalSlot animalSlot, Vector2 startedPosition)
         {
             _curSwapMode = SwapType.Drag;
-            
+
             if (_animalSlotDragMoving != null) return;
             _animalSlotDragMoving = animalSlot;
             _mouseStart = startedPosition;
@@ -160,7 +161,7 @@ namespace Match3Game.Scripts.Behaviours.Swap
         {
             var dir = GetDirectionToSwap(_curSwapMode);
             var directionMagnitude = (gameConfig.SwapThreshold * gameConfig.SwapThreshold);
-            
+
             var add = Point.Zero;
             _newIndex = GetPointToSwapWith(dir, directionMagnitude, out add);
 
@@ -170,13 +171,13 @@ namespace Match3Game.Scripts.Behaviours.Swap
         private void SwapAnimalByDrag()
         {
             if (_animalSlotDragMoving == null) return;
-        
+
             var dir = GetDirectionToSwap(_curSwapMode);
             var directionMagnitude = dir.magnitude;
 
             var add = Point.Zero;
             _newIndex = GetPointToSwapWith(dir, directionMagnitude, out add);
-            
+
             _animalSlotDragMoving.MovePositionTo(GetPositionToGo(add));
         }
 
@@ -184,7 +185,7 @@ namespace Match3Game.Scripts.Behaviours.Swap
 
         #region Helpers For Swap
 
-                /// <summary>
+        /// <summary>
         /// Return the Vector2 position our animal has to go right now
         /// </summary>
         /// <param name="referencePoint"></param>
@@ -192,7 +193,7 @@ namespace Match3Game.Scripts.Behaviours.Swap
         private Vector2 GetPositionToGo(Point referencePoint)
         {
             var animalSlot = _curSwapMode == SwapType.Click ? _animalSlotClickMoving : _animalSlotDragMoving;
-            
+
             var pos = BoardCore.GetPositionFromPoint(animalSlot.index);
             if (!_newIndex.Equals(animalSlot.index))
                 pos += Point.Mult(new Point(referencePoint.x, -referencePoint.y), 16).ToVector();
@@ -230,18 +231,20 @@ namespace Match3Game.Scripts.Behaviours.Swap
         {
             var nDir = dir.normalized;
             var aDir = new Vector2(Mathf.Abs(dir.x), Mathf.Abs(dir.y));
-            
-            var pointToSwapWith = Point.CloneOf(_curSwapMode == SwapType.Drag ? _animalSlotDragMoving.index : _animalSlotClickMoving.index);
+
+            var pointToSwapWith = Point.CloneOf(_curSwapMode == SwapType.Drag
+                ? _animalSlotDragMoving.index
+                : _animalSlotClickMoving.index);
             addPoint = Point.Zero;
-            
-            if (directionMagnitude > 32) 
+
+            if (directionMagnitude > 32)
             {
                 if (aDir.x > aDir.y)
                     addPoint = (new Point((nDir.x > 0) ? 1 : -1, 0));
-                else if(aDir.y > aDir.x)
+                else if (aDir.y > aDir.x)
                     addPoint = (new Point(0, (nDir.y > 0) ? -1 : 1));
             }
-            
+
             pointToSwapWith.Sum(addPoint);
 
             return pointToSwapWith;
@@ -259,10 +262,10 @@ namespace Match3Game.Scripts.Behaviours.Swap
         {
             var randomDir = curAnimalDirections.nextDir;
             curAnimalDirections.nextDir--;
-            
-            if(curAnimalDirections.nextDir == -1)
+
+            if (curAnimalDirections.nextDir == -1)
                 ResetDirectionsToUse();
-            
+
             switch (randomDir)
             {
                 case 0:
@@ -285,7 +288,7 @@ namespace Match3Game.Scripts.Behaviours.Swap
         private void UpdateCurAnimalDirections(AnimalSlot animalSlot)
         {
             if (curAnimalDirections.animalPoint.Equals(animalSlot.index)) return;
-            
+
             curAnimalDirections.animalPoint = animalSlot.index;
             ResetDirectionsToUse();
         }
@@ -296,10 +299,10 @@ namespace Match3Game.Scripts.Behaviours.Swap
         private void ResetDirectionsToUse()
         {
             curAnimalDirections.nextDir = 3;
-            
+
             curAnimalDirections.directionAvailable.Clear();
             curAnimalDirections.directionAvailable = curAnimalDirections.allDirectionAvailable;
-            
+
             // if(curAnimalDirections.animalPoint.x != 0 && curAnimalDirections.animalPoint.y != (gameConfig.Width - 1))
             // {
             //     curAnimalDirections.directionAvailable = curAnimalDirections.allDirectionAvailable;

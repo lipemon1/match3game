@@ -7,12 +7,13 @@ namespace Match3Game.Scripts.Model
     {
         public AnimalSlot one;
         public AnimalSlot two;
- 
+
         public FlippedPieces(AnimalSlot o, AnimalSlot t)
         {
-            one = o; two = t;
+            one = o;
+            two = t;
         }
- 
+
         public AnimalSlot GetOtherPiece(AnimalSlot p)
         {
             if (p == one)

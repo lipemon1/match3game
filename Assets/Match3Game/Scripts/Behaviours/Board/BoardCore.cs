@@ -4,6 +4,7 @@ using System.Linq;
 using Match3Game.Scripts;
 using Match3Game.Scripts.Behaviours;
 using Match3Game.Scripts.Behaviours.Audio;
+using Match3Game.Scripts.Behaviours.Shake;
 using Match3Game.Scripts.Behaviours.Slots;
 using Match3Game.Scripts.Model;
 using Match3Game.Scripts.Scriptables;
@@ -13,15 +14,13 @@ public class BoardCore : MonoBehaviour
 {
     public ArrayLayout boardLayout;
 
-    [Header("Game Configuration")] 
-    [SerializeField] private GameConfig gameConfig;
+    [Header("Game Configuration")] [SerializeField]
+    private GameConfig gameConfig;
 
-    [Header("UI Elements")]
-    public RectTransform gameBoard;
+    [Header("UI Elements")] public RectTransform gameBoard;
     public RectTransform killedBoard;
 
-    [Header("Prefabs")]
-    public GameObject animalPrefab;
+    [Header("Prefabs")] public GameObject animalPrefab;
     public GameObject animalKilledPrefab;
 
     private int[] _fills;
@@ -71,12 +70,13 @@ public class BoardCore : MonoBehaviour
             else //If we have some match
             {
                 SfxPlayer.Instance.PlayPop();
-                
+                BoardShake.Instance.Shake();
+
                 //remove every animal slot connected on that match
                 foreach (var pnt in connected)
                 {
                     KillPiece(pnt);
-                    
+
                     var slot = GetSlotAtPoint(pnt);
                     var animalSlot = slot.GetAnimalSlot();
                     if (animalSlot != null)
@@ -84,6 +84,7 @@ public class BoardCore : MonoBehaviour
                         animalSlot.gameObject.SetActive(false);
                         _dead.Add(animalSlot);
                     }
+
                     slot.SetSlot(null);
                 }
 
@@ -120,11 +121,11 @@ public class BoardCore : MonoBehaviour
                         var gotten = GetSlotAtPoint(nextPoint);
                         var animalSlot = gotten.GetAnimalSlot();
 
-                        
+
                         slot.SetSlot(animalSlot);
                         _update.Add(animalSlot);
 
-                        
+
                         gotten.SetSlot(null);
                     }
                     else
@@ -132,7 +133,7 @@ public class BoardCore : MonoBehaviour
                         var newVal = GenerateAnimal();
                         AnimalSlot aSlot;
                         var fallPnt = new Point(x, (-1 - _fills[x]));
-                        if(_dead.Count > 0)
+                        if (_dead.Count > 0)
                         {
                             var revivedAnimal = _dead[0];
                             revivedAnimal.gameObject.SetActive(true);
@@ -155,6 +156,7 @@ public class BoardCore : MonoBehaviour
                         ResetPiece(aSlot);
                         _fills[x]++;
                     }
+
                     break;
                 }
             }
@@ -190,11 +192,11 @@ public class BoardCore : MonoBehaviour
     private void CreateBoard()
     {
         _board = new Slot[gameConfig.Width, gameConfig.Height];
-        for(var y = 0; y < gameConfig.Height; y++)
+        for (var y = 0; y < gameConfig.Height; y++)
         {
-            for(var x = 0; x < gameConfig.Width; x++)
+            for (var x = 0; x < gameConfig.Width; x++)
             {
-                _board[x, y] = new Slot((boardLayout.rows[y].row[x]) ? - 1 : (int) GenerateAnimal(), new Point(x, y));
+                _board[x, y] = new Slot((boardLayout.rows[y].row[x]) ? -1 : (int) GenerateAnimal(), new Point(x, y));
             }
         }
     }
@@ -239,19 +241,19 @@ public class BoardCore : MonoBehaviour
                 //Checking if we have a animal
                 var animal = slot.animal;
                 if (animal <= 0) continue;
-                
+
                 var slotGameObject = Instantiate(animalPrefab, gameBoard);
                 var animalSlot = slotGameObject.GetComponent<AnimalSlot>();
-                
+
                 var rectTransform = slotGameObject.GetComponent<RectTransform>();
                 rectTransform.anchoredPosition = new Vector2(32 + (64 * x), -32 - (64 * y));
-                
+
                 animalSlot.Initialize(animal, new Point(x, y), gameConfig.Animals[(int) (animal - 1)]);
                 slot.SetSlot(animalSlot);
             }
         }
     }
-     
+
     public void ResetPiece(AnimalSlot piece)
     {
         piece.ResetPosition();
@@ -271,7 +273,7 @@ public class BoardCore : MonoBehaviour
             slotOne.SetSlot(pieceTwo);
             slotTwo.SetSlot(animalOne);
 
-            if(main)
+            if (main)
                 _flipped.Add(new FlippedPieces(animalOne, pieceTwo));
 
             _update.Add(animalOne);
@@ -285,7 +287,8 @@ public class BoardCore : MonoBehaviour
     {
         var available = new List<KilledAnimal>();
         foreach (var t in _killed)
-            if (!t.isFalling) available.Add(t);
+            if (!t.isFalling)
+                available.Add(t);
 
         KilledAnimal set = null;
         if (available.Count > 0)
@@ -298,14 +301,14 @@ public class BoardCore : MonoBehaviour
             _killed.Add(kPiece);
         }
 
-        var animal = (int)(GetAnimalAtPoint(p) - 1);
+        var animal = (int) (GetAnimalAtPoint(p) - 1);
         if (set != null && animal >= 0 && animal < gameConfig.Animals.Length)
             set.Initialize(gameConfig.Animals[animal], GetPositionFromPoint(p));
     }
 
     #region Matches
 
-        /// <summary>
+    /// <summary>
     /// Return a list of matched points relative to 'point'
     /// </summary>
     /// <param name="point"></param>
@@ -322,35 +325,36 @@ public class BoardCore : MonoBehaviour
             Point.Down,
             Point.Left
         };
-        
+
         //First check to see if we have 2 or more animals on every direction (horizontal and vertical)
-        foreach(var dir in directions)
+        foreach (var dir in directions)
         {
             var line = new List<Point>();
 
             var same = 0;
-            for(var i = 1; i < 3; i++)
+            for (var i = 1; i < 3; i++)
             {
                 var check = Point.Sum(point, Point.Mult(dir, i));
                 if (GetAnimalAtPoint(check) != animal) continue;
-                
+
                 line.Add(check);
                 same++;
             }
 
             //when we have more than 1 animal repeated in the same direction then it's a match
-            if (same > 1) 
+            if (same > 1)
                 AddMatchedPoints(ref connected, line);
         }
 
         //second check in case we are in the middle of two animal similar to us
-        for(var i = 0; i < 2; i++) 
+        for (var i = 0; i < 2; i++)
         {
             var line = new List<Point>();
 
             var same = 0;
-            Point[] check = { Point.Sum(point, directions[i]), Point.Sum(point, directions[i + 2]) }; // i + 2 to check both sides
-            foreach (var next in check) 
+            Point[] check =
+                {Point.Sum(point, directions[i]), Point.Sum(point, directions[i + 2])}; // i + 2 to check both sides
+            foreach (var next in check)
             {
                 if (GetAnimalAtPoint(next) != animal) continue;
                 line.Add(next);
@@ -361,10 +365,10 @@ public class BoardCore : MonoBehaviour
                 AddMatchedPoints(ref connected, line);
         }
 
-        
+
         //third check we gonna look for boxes shapes like 2x2
-        for(var i = 0; i < 4; i++)
-                 {
+        for (var i = 0; i < 4; i++)
+        {
             var square = new List<Point>();
 
             var same = 0;
@@ -372,7 +376,11 @@ public class BoardCore : MonoBehaviour
             if (next >= 4)
                 next -= 4;
 
-            Point[] check = { Point.Sum(point, directions[i]), Point.Sum(point, directions[next]), Point.Sum(point, Point.Sum(directions[i], directions[next])) };
+            Point[] check =
+            {
+                Point.Sum(point, directions[i]), Point.Sum(point, directions[next]),
+                Point.Sum(point, Point.Sum(directions[i], directions[next]))
+            };
             foreach (var pnt in check)
             {
                 if (GetAnimalAtPoint(pnt) != animal) continue;
@@ -400,11 +408,11 @@ public class BoardCore : MonoBehaviour
     /// <param name="add"></param>
     private static void AddMatchedPoints(ref List<Point> points, IEnumerable<Point> add)
     {
-        foreach(var p in add)
+        foreach (var p in add)
         {
             var doAdd = true;
             var i = 0;
-            for(; i < points.Count; i++)
+            for (; i < points.Count; i++)
             {
                 if (!points[i].Equals(p)) continue;
                 doAdd = false;
@@ -437,7 +445,8 @@ public class BoardCore : MonoBehaviour
     /// <returns></returns>
     private AnimalType GetAnimalAtPoint(Point point)
     {
-        if (point.x < 0 || point.x >= gameConfig.Width || point.y < 0 || point.y >= gameConfig.Height) return AnimalType.Undefined;
+        if (point.x < 0 || point.x >= gameConfig.Width || point.y < 0 || point.y >= gameConfig.Height)
+            return AnimalType.Undefined;
         return _board[point.x, point.y].animal;
     }
 
@@ -460,7 +469,7 @@ public class BoardCore : MonoBehaviour
     {
         return _board[point.x, point.y];
     }
-    
+
     /// <summary>
     /// Calculate new Animal value
     /// </summary>

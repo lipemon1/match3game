@@ -28,3 +28,5 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 03ebdeb1fc09409408ae03712cf6d873, type: 3}
   - {fileID: 8300000, guid: d5d0a4e3b141e104a880ce9bca882a76, type: 3}
   - {fileID: 8300000, guid: 28ebd9b3d076ff440aa908c5638c73ed, type: 3}
+  shakeDuration: 0.25
+  shakeMagnitude: 4

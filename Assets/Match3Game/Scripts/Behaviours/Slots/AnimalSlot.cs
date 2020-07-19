@@ -46,7 +46,7 @@ namespace Match3Game.Scripts.Behaviours.Slots
 
         public bool UpdatePiece()
         {
-            if(Vector3.Distance(rect.anchoredPosition, pos) > 1)
+            if (Vector3.Distance(rect.anchoredPosition, pos) > 1)
             {
                 MovePositionTo(pos);
                 updating = true;

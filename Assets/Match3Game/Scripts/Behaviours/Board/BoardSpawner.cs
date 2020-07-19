@@ -8,16 +8,13 @@ namespace Match3Game.Scripts.Behaviours.Board
     public class BoardSpawner : MonoBehaviour
     {
         public static BoardSpawner Instance { get; set; }
-        
-        [Header("UI Elements")]
-        public Sprite[] animalsSprites;
+
+        [Header("UI Elements")] public Sprite[] animalsSprites;
         public RectTransform gameBoard;
 
-        [Header("Prefabs")] 
-        [SerializeField] private GameObject _animalPrefab;
+        [Header("Prefabs")] [SerializeField] private GameObject _animalPrefab;
 
-        [Header("Board Reference")] 
-        private Slot[,] _board;
+        [Header("Board Reference")] private Slot[,] _board;
 
         private void Awake()
         {
@@ -30,7 +27,7 @@ namespace Match3Game.Scripts.Behaviours.Board
         public void InstantiateBoard(int width, int height, Slot[,] board)
         {
             _board = board;
-            
+
             for (int x = 0; x < width; x++)
             {
                 for (int y = 0; y < height; y++)
@@ -48,7 +45,7 @@ namespace Match3Game.Scripts.Behaviours.Board
                 }
             }
         }
-        
+
         Slot getNodeAtPoint(Point p)
         {
             return _board[p.x, p.y];

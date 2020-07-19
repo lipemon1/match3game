@@ -3,7 +3,7 @@
 #pragma warning disable 0219 // variable assigned but not used.
 #pragma warning disable 0414 // private field assigned but not used.
 #pragma warning disable 0618 // obslolete
-#pragma warning disable 0108 
+#pragma warning disable 0108
 #pragma warning disable 0649 //never used
 #pragma warning disable 0429 //never used
 
@@ -16,8 +16,6 @@
  ***********************************************************************************************************/
 
 
-
-
 using UnityEngine;
 using UnityEditor;
 using UnityEditorInternal;
@@ -25,6 +23,7 @@ using System.Collections;
 using System.IO;
 using System.Text.RegularExpressions;
 using System;
+
 // from the excellent http://answers.unity3d.com/questions/45186/can-i-auto-run-a-script-when-editor-launches-or-a.html
 
 ///
@@ -34,113 +33,112 @@ using System;
 
 namespace AppAdvisory.PetsSpriteMegaPack
 {
-	[InitializeOnLoad]
-	public class Autorun
-	{
+    [InitializeOnLoad]
+    public class Autorun
+    {
+        /******* TO MODIFY **********/
+        /******* TO MODIFY **********/
+        /******* TO MODIFY **********/
+        /******* TO MODIFY **********/
+        private const bool DOSCIRPTINGSYMBOL = false;
 
-		/******* TO MODIFY **********/
-		/******* TO MODIFY **********/
-		/******* TO MODIFY **********/
-		/******* TO MODIFY **********/
-		private const bool DOSCIRPTINGSYMBOL = false;
-		/******* TO MODIFY **********/
-		private const string VSRATE = "VSRATE";
-		/******* TO MODIFY **********/
-		/******* TO MODIFY **********/
-		/******* TO MODIFY **********/
-		/******* TO MODIFY **********/
-		/******* TO MODIFY **********/
+        /******* TO MODIFY **********/
+        private const string VSRATE = "VSRATE";
+        /******* TO MODIFY **********/
+        /******* TO MODIFY **********/
+        /******* TO MODIFY **********/
+        /******* TO MODIFY **********/
+        /******* TO MODIFY **********/
 
-		static void SetScriptingDefineSymbols () 
-		{
-			SetSymbolsForTarget (BuildTargetGroup.Android, VSRATE);
-			SetSymbolsForTarget (BuildTargetGroup.iOS, VSRATE); 
-			SetSymbolsForTarget (BuildTargetGroup.WSA, VSRATE);
-			#if !UNITY_5_5_OR_NEWER
+        static void SetScriptingDefineSymbols()
+        {
+            SetSymbolsForTarget(BuildTargetGroup.Android, VSRATE);
+            SetSymbolsForTarget(BuildTargetGroup.iOS, VSRATE);
+            SetSymbolsForTarget(BuildTargetGroup.WSA, VSRATE);
+#if !UNITY_5_5_OR_NEWER
 			#if !UNITY5_0 && !UNITY_5_1
 			SetSymbolsForTarget (BuildTargetGroup.Nintendo3DS, VSRATE);
 			#endif
 			SetSymbolsForTarget (BuildTargetGroup.PS3, VSRATE);
 			SetSymbolsForTarget (BuildTargetGroup.XBOX360, VSRATE);
-			#endif
-			SetSymbolsForTarget (BuildTargetGroup.PS4, VSRATE);
-			SetSymbolsForTarget (BuildTargetGroup.PSM, VSRATE);
-			SetSymbolsForTarget (BuildTargetGroup.PSP2, VSRATE);
-			SetSymbolsForTarget (BuildTargetGroup.SamsungTV, VSRATE); 
-			SetSymbolsForTarget (BuildTargetGroup.Standalone, VSRATE);
-			SetSymbolsForTarget (BuildTargetGroup.Tizen, VSRATE);
-			#if !UNITY5_0 && !UNITY_5_1
-			SetSymbolsForTarget (BuildTargetGroup.tvOS, VSRATE);
-			SetSymbolsForTarget (BuildTargetGroup.WiiU, VSRATE); 
-			#endif
-			SetSymbolsForTarget (BuildTargetGroup.WebGL, VSRATE);
-			SetSymbolsForTarget (BuildTargetGroup.XboxOne, VSRATE);
-		}
+#endif
+            SetSymbolsForTarget(BuildTargetGroup.PS4, VSRATE);
+            SetSymbolsForTarget(BuildTargetGroup.PSM, VSRATE);
+            SetSymbolsForTarget(BuildTargetGroup.PSP2, VSRATE);
+            SetSymbolsForTarget(BuildTargetGroup.SamsungTV, VSRATE);
+            SetSymbolsForTarget(BuildTargetGroup.Standalone, VSRATE);
+            SetSymbolsForTarget(BuildTargetGroup.Tizen, VSRATE);
+#if !UNITY5_0 && !UNITY_5_1
+            SetSymbolsForTarget(BuildTargetGroup.tvOS, VSRATE);
+            SetSymbolsForTarget(BuildTargetGroup.WiiU, VSRATE);
+#endif
+            SetSymbolsForTarget(BuildTargetGroup.WebGL, VSRATE);
+            SetSymbolsForTarget(BuildTargetGroup.XboxOne, VSRATE);
+        }
 
 
-		static void SetSymbolsForTarget(BuildTargetGroup target, string scriptingSymbol)
-		{
+        static void SetSymbolsForTarget(BuildTargetGroup target, string scriptingSymbol)
+        {
+            if (target == BuildTargetGroup.Unknown)
+                return;
 
-			if(target == BuildTargetGroup.Unknown)
-				return;
+            var s = PlayerSettings.GetScriptingDefineSymbolsForGroup(target);
 
-			var s = PlayerSettings.GetScriptingDefineSymbolsForGroup(target);
+            string sTemp = scriptingSymbol;
 
-			string sTemp = scriptingSymbol;
+            if (!s.Contains(sTemp))
+            {
+                s = s.Replace(scriptingSymbol + ";", "");
 
-			if(!s.Contains(sTemp)) 
-			{
+                s = s.Replace(scriptingSymbol, "");
 
-				s = s.Replace(scriptingSymbol + ";","");
+                s = scriptingSymbol + ";" + s;
 
-				s = s.Replace(scriptingSymbol,"");  
-
-				s = scriptingSymbol + ";" + s;
-
-				PlayerSettings.SetScriptingDefineSymbolsForGroup(target,s);
-			}
-		}
+                PlayerSettings.SetScriptingDefineSymbolsForGroup(target, s);
+            }
+        }
 
 
-		static Autorun()
-		{
-			EditorApplication.update += RunOnce;
-		}
+        static Autorun()
+        {
+            EditorApplication.update += RunOnce;
+        }
 
-		static void RunOnce() 
-		{
-			EditorApplication.update -= RunOnce;
+        static void RunOnce()
+        {
+            EditorApplication.update -= RunOnce;
 
-			// do something here. You could open an EditorWindow, for example.
+            // do something here. You could open an EditorWindow, for example.
 
-			if (DGChecker.needDotween == true && (!Directory.Exists ("Assets/Demigiant") || Directory.Exists ("Assets/DOTween")))
-			{
-				DGChecker.OpenPopupDGCHECKERStartup();
+            if (DGChecker.needDotween == true &&
+                (!Directory.Exists("Assets/Demigiant") || Directory.Exists("Assets/DOTween")))
+            {
+                DGChecker.OpenPopupDGCHECKERStartup();
 
-				return;
-			}
+                return;
+            }
 
 
-			if(DOSCIRPTINGSYMBOL)
-				SetScriptingDefineSymbols ();
+            if (DOSCIRPTINGSYMBOL)
+                SetScriptingDefineSymbols();
 
-			int count = EditorPrefs.GetInt(Welcome.PREFSHOWATSTARTUP + "autoshow",0);
+            int count = EditorPrefs.GetInt(Welcome.PREFSHOWATSTARTUP + "autoshow", 0);
 
-			if(count == 10 || count == 30 || count == 50 || count == 80 || count == 100)
-			{
+            if (count == 10 || count == 30 || count == 50 || count == 80 || count == 100)
+            {
 //				Application.OpenURL("http://u3d.as/oWD");
-			}
+            }
 
-			EditorPrefs.SetInt(Welcome.PREFSHOWATSTARTUP + "autoshow", count + 1);
+            EditorPrefs.SetInt(Welcome.PREFSHOWATSTARTUP + "autoshow", count + 1);
 
-			Welcome.showAtStartup = EditorPrefs.GetInt(Welcome.PREFSHOWATSTARTUP, 1) == 1;
-			 
-			if (Welcome.showAtStartup)
-			{
-				DGChecker.CheckItNow();
-			
-				Welcome.OpenPopupStartup();
-			}
-		}
-	}
-}         
+            Welcome.showAtStartup = EditorPrefs.GetInt(Welcome.PREFSHOWATSTARTUP, 1) == 1;
+
+            if (Welcome.showAtStartup)
+            {
+                DGChecker.CheckItNow();
+
+                Welcome.OpenPopupStartup();
+            }
+        }
+    }
+}

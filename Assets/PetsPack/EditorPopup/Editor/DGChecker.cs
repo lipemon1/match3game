@@ -3,7 +3,7 @@
 #pragma warning disable 0219 // variable assigned but not used.
 #pragma warning disable 0414 // private field assigned but not used.
 #pragma warning disable 0618 // obslolete
-#pragma warning disable 0108 
+#pragma warning disable 0108
 #pragma warning disable 0649 //never used
 #pragma warning disable 0429 //never used
 
@@ -16,8 +16,6 @@
  ***********************************************************************************************************/
 
 
-
-
 using UnityEngine;
 using UnityEditor;
 using UnityEditorInternal;
@@ -28,125 +26,123 @@ using System;
 
 namespace AppAdvisory.PetsSpriteMegaPack
 {
-	[InitializeOnLoad]
-	public class DGChecker : EditorWindow 
-	{
-		private const string AADotween = "AADOTWEEN";
+    [InitializeOnLoad]
+    public class DGChecker : EditorWindow
+    {
+        private const string AADotween = "AADOTWEEN";
 
-		/******* TO MODIFY **********/
-		/******* TO MODIFY **********/
-		/******* TO MODIFY **********/
-		/******* TO MODIFY **********/
-		/******* TO MODIFY **********/
-		public const bool needDotween = false; 
-		/******* TO MODIFY **********/
-		/******* TO MODIFY **********/
-		/******* TO MODIFY **********/
-		/******* TO MODIFY **********/
-		/******* TO MODIFY **********/
+        /******* TO MODIFY **********/
+        /******* TO MODIFY **********/
+        /******* TO MODIFY **********/
+        /******* TO MODIFY **********/
+        /******* TO MODIFY **********/
+        public const bool needDotween = false;
+        /******* TO MODIFY **********/
+        /******* TO MODIFY **********/
+        /******* TO MODIFY **********/
+        /******* TO MODIFY **********/
+        /******* TO MODIFY **********/
 
-		public static void OpenWelcomeWindow()
-		{
-			GetWindow<DGChecker>(true);
-		}
+        public static void OpenWelcomeWindow()
+        {
+            GetWindow<DGChecker>(true);
+        }
 
-		static DGChecker()
-		{
-		}
+        static DGChecker()
+        {
+        }
 
-		//call from Autorun
-		public static void OpenPopupDGCHECKERStartup()
-		{
-			if(needDotween)
-				EditorApplication.update += CheckItNow;
-		}
+        //call from Autorun
+        public static void OpenPopupDGCHECKERStartup()
+        {
+            if (needDotween)
+                EditorApplication.update += CheckItNow;
+        }
 
-		public static void CheckItNow()
-		{
-			if(!needDotween)
-				return;
+        public static void CheckItNow()
+        {
+            if (!needDotween)
+                return;
 
-			if (Directory.Exists ("Assets/Demigiant"))
-			{
-				SetScriptingDefineSymbols ();
+            if (Directory.Exists("Assets/Demigiant"))
+            {
+                SetScriptingDefineSymbols();
 
-				GetWindow<DGChecker>(true).Close();
+                GetWindow<DGChecker>(true).Close();
+            }
+            else
+            {
+                Debug.LogError("Please install Dotween to use this asset : http://u3d.as/aZ1 ");
 
-			}
-			else
-			{ 
-				Debug.LogError("Please install Dotween to use this asset : http://u3d.as/aZ1 ");
+                OpenWelcomeWindow();
+            }
 
-				OpenWelcomeWindow();
-			}
+            EditorApplication.update -= CheckItNow;
+        }
 
-			EditorApplication.update -= CheckItNow;
-		}
-
-		static void SetScriptingDefineSymbols () 
-		{
-			//			if (Directory.Exists ("Assets/Demigiant"))
-			//			{
-			SetSymbolsForTarget (BuildTargetGroup.Android, AADotween);
-			SetSymbolsForTarget (BuildTargetGroup.iOS, AADotween); 
-			SetSymbolsForTarget (BuildTargetGroup.WSA, AADotween);
-			#if !UNITY_5_5_OR_NEWER
+        static void SetScriptingDefineSymbols()
+        {
+            //			if (Directory.Exists ("Assets/Demigiant"))
+            //			{
+            SetSymbolsForTarget(BuildTargetGroup.Android, AADotween);
+            SetSymbolsForTarget(BuildTargetGroup.iOS, AADotween);
+            SetSymbolsForTarget(BuildTargetGroup.WSA, AADotween);
+#if !UNITY_5_5_OR_NEWER
 			#if !UNITY5_0 && !UNITY_5_1
 			SetSymbolsForTarget (BuildTargetGroup.Nintendo3DS, AADotween);
 			#endif
 			SetSymbolsForTarget (BuildTargetGroup.PS3, AADotween);
 			SetSymbolsForTarget (BuildTargetGroup.XBOX360, AADotween);
-			#endif
-			SetSymbolsForTarget (BuildTargetGroup.PS4, AADotween);
-			SetSymbolsForTarget (BuildTargetGroup.PSM, AADotween);
-			SetSymbolsForTarget (BuildTargetGroup.PSP2, AADotween);
-			SetSymbolsForTarget (BuildTargetGroup.SamsungTV, AADotween); 
-			SetSymbolsForTarget (BuildTargetGroup.Standalone, AADotween);
-			SetSymbolsForTarget (BuildTargetGroup.Tizen, AADotween);
-			#if !UNITY5_0 && !UNITY_5_1
-			SetSymbolsForTarget (BuildTargetGroup.tvOS, AADotween);
-			SetSymbolsForTarget (BuildTargetGroup.WiiU, AADotween);
-			#endif
-			SetSymbolsForTarget (BuildTargetGroup.WebGL, AADotween);
-			SetSymbolsForTarget (BuildTargetGroup.XboxOne, AADotween);
-		}
+#endif
+            SetSymbolsForTarget(BuildTargetGroup.PS4, AADotween);
+            SetSymbolsForTarget(BuildTargetGroup.PSM, AADotween);
+            SetSymbolsForTarget(BuildTargetGroup.PSP2, AADotween);
+            SetSymbolsForTarget(BuildTargetGroup.SamsungTV, AADotween);
+            SetSymbolsForTarget(BuildTargetGroup.Standalone, AADotween);
+            SetSymbolsForTarget(BuildTargetGroup.Tizen, AADotween);
+#if !UNITY5_0 && !UNITY_5_1
+            SetSymbolsForTarget(BuildTargetGroup.tvOS, AADotween);
+            SetSymbolsForTarget(BuildTargetGroup.WiiU, AADotween);
+#endif
+            SetSymbolsForTarget(BuildTargetGroup.WebGL, AADotween);
+            SetSymbolsForTarget(BuildTargetGroup.XboxOne, AADotween);
+        }
 
-		public void OnGUI()
-		{
-			GUILayoutUtility.GetRect(position.width, 50);
-			GUILayout.Space(10);
-			GUILayout.BeginVertical();
+        public void OnGUI()
+        {
+            GUILayoutUtility.GetRect(position.width, 50);
+            GUILayout.Space(10);
+            GUILayout.BeginVertical();
 
-			if(GUILayout.Button("GET\nDOTWEEN\n(it's free)",  GUILayout.Width(100), GUILayout.Height(50)))
-			{
+            if (GUILayout.Button("GET\nDOTWEEN\n(it's free)", GUILayout.Width(100), GUILayout.Height(50)))
+            {
 //				Application.OpenURL("http://u3d.as/aZ1");
-			}
-		}
+            }
+        }
 
-		static void SetSymbolsForTarget(BuildTargetGroup target, string scriptingSymbol)
-		{
-			var s = PlayerSettings.GetScriptingDefineSymbolsForGroup(target);
+        static void SetSymbolsForTarget(BuildTargetGroup target, string scriptingSymbol)
+        {
+            var s = PlayerSettings.GetScriptingDefineSymbolsForGroup(target);
 
-			string sTemp = scriptingSymbol;
+            string sTemp = scriptingSymbol;
 
-			if(!s.Contains(sTemp))
-			{
+            if (!s.Contains(sTemp))
+            {
+                s = s.Replace(scriptingSymbol + ";", "");
 
-				s = s.Replace(scriptingSymbol + ";","");
+                s = s.Replace(scriptingSymbol, "");
 
-				s = s.Replace(scriptingSymbol,"");  
+                s = scriptingSymbol + ";" + s;
 
-				s = scriptingSymbol + ";" + s;
+                PlayerSettings.SetScriptingDefineSymbolsForGroup(target, s);
+            }
+        }
 
-				PlayerSettings.SetScriptingDefineSymbolsForGroup(target,s);
-			}
-		}
-
-		void OnEnable()
-		{
-			#if UNITY_5_3_OR_NEWER
-			titleContent = new GUIContent("Please install Dotween to use this asset"); 
-			#endif
-		}	
-	}
-}   
+        void OnEnable()
+        {
+#if UNITY_5_3_OR_NEWER
+            titleContent = new GUIContent("Please install Dotween to use this asset");
+#endif
+        }
+    }
+}
