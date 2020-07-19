@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Match3Game.Scripts.Behaviours.Board;
 using Match3Game.Scripts.Behaviours.Slots;
 using Match3Game.Scripts.Model;
 using Match3Game.Scripts.Scriptables;
@@ -38,7 +39,8 @@ namespace Match3Game.Scripts.Behaviours.Swap
 
         private Vector2 _mouseStart;
 
-        [Header("Variables for Click Change")] private AnimalSlot _animalSlotClickMoving;
+        [Header("Variables for Click Change")] 
+        private AnimalSlot _animalSlotClickMoving;
 
         [Header("Possible stats")] //those one will handle our click or possible swap
         private AnimalSlot _possibleAnimalSlotMoving;
