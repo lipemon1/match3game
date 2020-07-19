@@ -12,16 +12,13 @@ namespace Match3Game.Scripts.Behaviours.Slots
         public Point index;
 
         [HideInInspector] public Vector2 pos;
-        [HideInInspector] public RectTransform rect;
+        [SerializeField] public RectTransform rect;
+        [SerializeField] private Image img;
 
         bool updating; //if we are updating this animal slot
-        Image img;
 
         public void Initialize(AnimalType animal, Point point, Sprite animalSprite)
         {
-            img = GetComponent<Image>();
-            rect = GetComponent<RectTransform>();
-
             this.animal = animal;
             SetIndex(point);
             img.sprite = animalSprite;
