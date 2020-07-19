@@ -21,9 +21,9 @@ namespace Match3Game.Scripts.Behaviours.Audio
                 Destroy(this.gameObject);
         }
 
-        public void PlayPop()
+        public void PlayPop(float volumeModifier = 1)
         {
-            audioSource.PlayOneShot(GetRandomPop());
+            audioSource.PlayOneShot(GetRandomPop(), volumeModifier);
         }
 
         private AudioClip GetRandomPop()

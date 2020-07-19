@@ -21,19 +21,19 @@ namespace Match3Game.Scripts.Behaviours.Shake
                 Destroy(this.gameObject);
         }
 
-        public void Shake()
+        public void Shake(float shakeMultiplier = 1f)
         {
-            StartCoroutine(ShakeCo());
+            StartCoroutine(ShakeCo(shakeMultiplier));
         }
         
-        private IEnumerator ShakeCo()
+        private IEnumerator ShakeCo(float shakeMultiplier)
         {
             var originalPos = transform.localPosition;
             var elapsed = 0f;
             while (elapsed < gameConfig.Duration)
             {
-                var x = Random.Range(-1, 1f) * gameConfig.Magnitude;
-                var y = Random.Range(-1, 1f) * gameConfig.Magnitude;
+                var x = Random.Range(-1, 1f) * (gameConfig.Magnitude + shakeMultiplier);
+                var y = Random.Range(-1, 1f) * (gameConfig.Magnitude + shakeMultiplier);
                 
                 transform.localPosition = new Vector3(x, y, originalPos.z);
 

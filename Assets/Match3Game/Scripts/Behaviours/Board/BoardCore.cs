@@ -69,8 +69,11 @@ public class BoardCore : MonoBehaviour
             }
             else //If we have some match
             {
-                SfxPlayer.Instance.PlayPop();
-                BoardShake.Instance.Shake();
+                var volume = 0.7f + (connected.Count * gameConfig.AnimalPopMultiplier);
+                SfxPlayer.Instance.PlayPop(volume);
+
+                var shakeMult = connected.Count * gameConfig.AnimalShakeMultiplier;
+                BoardShake.Instance.Shake(shakeMult);
 
                 //remove every animal slot connected on that match
                 foreach (var pnt in connected)

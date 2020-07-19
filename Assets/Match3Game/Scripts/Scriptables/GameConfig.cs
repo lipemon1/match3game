@@ -27,12 +27,18 @@ namespace Match3Game.Scripts.Scriptables
         [Header("Pop SFX")] 
         [SerializeField] private List<AudioClip> popsSfx = new List<AudioClip>();
         [SerializeField] private int boardCreationPop = 3;
+        [SerializeField] private float animalPopMultiplier = 0.25f;
 
         [Header("Camera Shake")] 
         [SerializeField] private float shakeDuration = 0.25f;
         [SerializeField] private float shakeMagnitude = 4f;
+        [SerializeField] private float animalShakeMultiplier = 0.3f;
 
         #region Properties
+
+        public float AnimalShakeMultiplier => animalShakeMultiplier;
+
+        public float AnimalPopMultiplier => animalPopMultiplier;
 
         public int BoardCreationPop => boardCreationPop;
 
