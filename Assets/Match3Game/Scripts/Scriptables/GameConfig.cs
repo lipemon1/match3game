@@ -7,10 +7,10 @@ namespace Match3Game.Scripts.Scriptables
         order = 1)]
     public class GameConfig : ScriptableObject
     {
-        [Header("Board Size")] [SerializeField]
-        private int width = 8;
-
+        [Header("Board")] 
+        [SerializeField] private int width = 8;
         [SerializeField] private int height = 8;
+        [SerializeField] private float boardSpeed = 0.2f;
 
         [Header("Animals Sprites")] [SerializeField]
         private Sprite[] animalsSprites;
@@ -26,24 +26,21 @@ namespace Match3Game.Scripts.Scriptables
 
         [Header("Pop SFX")] 
         [SerializeField] private List<AudioClip> popsSfx = new List<AudioClip>();
+        [SerializeField] private int boardCreationPop = 3;
 
         [Header("Camera Shake")] 
-        [SerializeField] private float shakeDuration;
-        [SerializeField] private float shakeMagnitude;
+        [SerializeField] private float shakeDuration = 0.25f;
+        [SerializeField] private float shakeMagnitude = 4f;
 
         #region Properties
 
-        public float Magnitude
-        {
-            get => shakeMagnitude;
-            set => shakeMagnitude = value;
-        }
+        public int BoardCreationPop => boardCreationPop;
 
-        public float Duration
-        {
-            get => shakeDuration;
-            set => shakeDuration = value;
-        }
+        public float BoardSpeed => boardSpeed;
+
+        public float Magnitude => shakeMagnitude;
+
+        public float Duration => shakeDuration;
 
         public List<AudioClip> PopsSfx => popsSfx;
 

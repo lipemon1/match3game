@@ -232,6 +232,16 @@ public class BoardCore : MonoBehaviour
     /// </summary>
     private void InstantiateBoard()
     {
+        StartCoroutine(InstantiateBoardCo());
+    }
+
+    private IEnumerator InstantiateBoardCo()
+    {
+        var waitTime = new WaitForSeconds(gameConfig.BoardSpeed);
+
+        var popIndex = 0; 
+        var popGoal = gameConfig.BoardCreationPop;
+
         for (var x = 0; x < gameConfig.Width; x++)
         {
             for (var y = 0; y < gameConfig.Height; y++)
@@ -250,6 +260,15 @@ public class BoardCore : MonoBehaviour
 
                 animalSlot.Initialize(animal, new Point(x, y), gameConfig.Animals[(int) (animal - 1)]);
                 slot.SetSlot(animalSlot);
+
+                if (popIndex == popGoal)
+                {
+                    SfxPlayer.Instance.PlayPop();
+                    popGoal += gameConfig.BoardCreationPop;
+                }
+
+                popIndex++;
+                yield return waitTime;
             }
         }
     }
