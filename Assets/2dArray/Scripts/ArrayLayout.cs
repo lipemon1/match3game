@@ -10,5 +10,5 @@ public class ArrayLayout  {
 	}
 
     public Grid grid;
-    public rowData[] rows = new rowData[14];
+    public rowData[] rows = new rowData[16];
 }
