@@ -1,6 +1,6 @@
 # this is Animal Crush
 
-Don't remember what is a Match 3 Game?, enter here and you remeber: [Match 3 Games](https://www.match3games.com)
+Don't remember what is a Match 3 Game?, enter here and you will remeber: [Match 3 Games](https://www.match3games.com)
 
 And nothing better to show you first than this pig bug getting out of control...
 
