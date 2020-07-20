@@ -33,3 +33,6 @@ Sfx pop sound and shake, grows for every match with the number of animals on tha
 
 [Youtube vídeo 3 - CS50](https://youtu.be/jNOjPpanOBM)
 
+[Youtube vídeo 4 - Brackeys](https://www.youtube.com/watch?v=9A9yj8KnM8c)
+
+
