@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a32c07677bde5f4ea5a76a7674eade0, type: 3}
   m_Name: Game Configuration
   m_EditorClassIdentifier: 
+  gameTime: 20
   width: 8
   height: 8
   boardSpeed: 0.02
