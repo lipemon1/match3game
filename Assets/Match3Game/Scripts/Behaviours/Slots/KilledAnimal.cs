@@ -34,8 +34,8 @@ namespace Match3Game.Scripts.Behaviours.Slots
             _moveDir.y -= Time.deltaTime * gameConfig.Gravity;
             _moveDir.x = Mathf.Lerp(_moveDir.x, 0, Time.deltaTime);
             rect.anchoredPosition += _moveDir * (Time.deltaTime * gameConfig.Speed);
-            if (rect.position.x < -128f || rect.position.x > Screen.width + 128f || rect.position.y < -128f ||
-                rect.position.y > Screen.height + 128f)
+            if (rect.position.x < -1024f || rect.position.x > Screen.width + 1024f || rect.position.y < -1024f ||
+                rect.position.y > Screen.height + 1024f)
                 isFalling = false;
         }
     }

@@ -21,11 +21,19 @@ namespace Match3Game.Scripts.Behaviours.Audio
                 Destroy(this.gameObject);
         }
 
+        /// <summary>
+        /// Play a random pop sound effect
+        /// </summary>
+        /// <param name="volumeModifier"></param>
         public void PlayPop(float volumeModifier = 1)
         {
             audioSource.PlayOneShot(GetRandomPop(), volumeModifier);
         }
 
+        /// <summary>
+        /// Return a random audioclip for pop
+        /// </summary>
+        /// <returns></returns>
         private AudioClip GetRandomPop()
         {
             var randomPopIndex = Random.Range(0, gameConfig.PopsSfx.Count);

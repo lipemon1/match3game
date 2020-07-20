@@ -7,6 +7,9 @@ namespace Match3Game.Scripts.Scriptables
         order = 1)]
     public class GameConfig : ScriptableObject
     {
+        [Header("Game Time")] 
+        [SerializeField] private float gameTime = 15f;
+        
         [Header("Board")] 
         [SerializeField] private int width = 8;
         [SerializeField] private int height = 8;
@@ -35,6 +38,8 @@ namespace Match3Game.Scripts.Scriptables
         [SerializeField] private float animalShakeMultiplier = 0.3f;
 
         #region Properties
+
+        public float GameTime => gameTime;
 
         public float AnimalShakeMultiplier => animalShakeMultiplier;
 

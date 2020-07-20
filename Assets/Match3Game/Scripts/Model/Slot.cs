@@ -9,10 +9,10 @@ namespace Match3Game.Scripts.Model
         public Point index;
         private AnimalSlot _animalSlot;
 
-        public Slot(int animal, Point i)
+        public Slot(int animal, Point point)
         {
             this.animal = (AnimalType) animal;
-            index = i;
+            index = point;
         }
 
         /// <summary>

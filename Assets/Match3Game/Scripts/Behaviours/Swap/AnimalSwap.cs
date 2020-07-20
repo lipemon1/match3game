@@ -104,9 +104,9 @@ namespace Match3Game.Scripts.Behaviours.Swap
                 if (_animalSlotDragMoving == null) return;
 
                 if (!_newIndex.Equals(_animalSlotDragMoving.index))
-                    gameBoard.FlipPieces(_animalSlotDragMoving.index, _newIndex, true);
+                    gameBoard.FlipAnimal(_animalSlotDragMoving.index, _newIndex, true);
                 else
-                    gameBoard.ResetPiece(_animalSlotDragMoving);
+                    gameBoard.ResetAnimalSlot(_animalSlotDragMoving);
                 _animalSlotDragMoving = null;
             }
             else
@@ -115,9 +115,9 @@ namespace Match3Game.Scripts.Behaviours.Swap
                 if (_animalSlotClickMoving == null) return;
 
                 if (!_newIndex.Equals(_animalSlotClickMoving.index))
-                    gameBoard.FlipPieces(_animalSlotClickMoving.index, _newIndex, true);
+                    gameBoard.FlipAnimal(_animalSlotClickMoving.index, _newIndex, true);
                 else
-                    gameBoard.ResetPiece(_animalSlotClickMoving);
+                    gameBoard.ResetAnimalSlot(_animalSlotClickMoving);
                 _animalSlotClickMoving = null;
             }
         }

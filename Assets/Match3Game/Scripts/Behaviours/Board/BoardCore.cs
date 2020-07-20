@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Match3Game.Scripts.Behaviours.Audio;
+using Match3Game.Scripts.Behaviours.Score;
 using Match3Game.Scripts.Behaviours.Shake;
 using Match3Game.Scripts.Behaviours.Slots;
 using Match3Game.Scripts.Model;
@@ -65,12 +66,15 @@ namespace Match3Game.Scripts.Behaviours.Board
                 {
                     //if it was flipped, flip back then
                     if (wasFlipped)
-                        FlipPieces(aSlot.index, flippedPiece.index, false);
+                        FlipAnimal(aSlot.index, flippedPiece.index, false);
                 }
                 else //If we have some match
                 {
                     var volume = 0.7f + (connected.Count * gameConfig.AnimalPopMultiplier);
                     SfxPlayer.Instance.PlayPop(volume);
+                    
+                    //Saving the match on ScoreManager
+                    ScoreManager.Instance.ReceiveMatch(GetSlotAtPoint(connected.First()).animal, connected.Count);
 
                     var shakeMult = connected.Count * gameConfig.AnimalShakeMultiplier;
                     BoardShake.Instance.Shake(shakeMult);
@@ -78,7 +82,7 @@ namespace Match3Game.Scripts.Behaviours.Board
                     //remove every animal slot connected on that match
                     foreach (var pnt in connected)
                     {
-                        KillPiece(pnt);
+                        KillAnimal(pnt);
 
                         var slot = GetSlotAtPoint(pnt);
                         var animalSlot = slot.GetAnimalSlot();
@@ -156,7 +160,7 @@ namespace Match3Game.Scripts.Behaviours.Board
 
                             var hole = GetSlotAtPoint(point);
                             hole.SetSlot(aSlot);
-                            ResetPiece(aSlot);
+                            ResetAnimalSlot(aSlot);
                             _fills[x]++;
                         }
 
@@ -176,7 +180,7 @@ namespace Match3Game.Scripts.Behaviours.Board
         /// </summary>
         public void Init()
         {
-            UnstantitateBoard();
+            UnstantiateBoard();
             
             _started = true;
             
@@ -193,7 +197,9 @@ namespace Match3Game.Scripts.Behaviours.Board
             InstantiateBoard();
         }
 
-        /// <summary>
+        #region Board Creation
+
+                /// <summary>
         /// Initialize BOARD with every slot
         /// </summary>
         private void CreateBoard()
@@ -242,6 +248,10 @@ namespace Match3Game.Scripts.Behaviours.Board
             StartCoroutine(InstantiateBoardCo());
         }
 
+        /// <summary>
+        /// Couroutine from InstantiateBoard
+        /// </summary>
+        /// <returns></returns>
         private IEnumerator InstantiateBoardCo()
         {
             var waitTime = new WaitForSeconds(gameConfig.BoardSpeed);
@@ -280,7 +290,10 @@ namespace Match3Game.Scripts.Behaviours.Board
             }
         }
 
-        private void UnstantitateBoard()
+        /// <summary>
+        /// Destroy the current visual board
+        /// </summary>
+        private void UnstantiateBoard()
         {
             if (gameBoard.childCount <= 0) return;
             
@@ -289,18 +302,23 @@ namespace Match3Game.Scripts.Behaviours.Board
             }
         }
 
+        #endregion
+
+        /// <summary>
+        /// This disable the functional board
+        /// </summary>
         public void StopBoard()
         {
             _started = false;
         }
 
-        public void ResetPiece(AnimalSlot piece)
-        {
-            piece.ResetPosition();
-            _update.Add(piece);
-        }
-
-        public void FlipPieces(Point one, Point two, bool main)
+        /// <summary>
+        /// Flip tow animals into each other
+        /// </summary>
+        /// <param name="one"></param>
+        /// <param name="two"></param>
+        /// <param name="main"></param>
+        public void FlipAnimal(Point one, Point two, bool main)
         {
             if (GetAnimalAtPoint(one) < 0) return;
 
@@ -320,30 +338,34 @@ namespace Match3Game.Scripts.Behaviours.Board
                 _update.Add(pieceTwo);
             }
             else
-                ResetPiece(animalOne);
+                ResetAnimalSlot(animalOne);
         }
 
-        private void KillPiece(Point p)
+        /// <summary>
+        /// Kill some animal
+        /// </summary>
+        /// <param name="point"></param>
+        private void KillAnimal(Point point)
         {
             var available = new List<KilledAnimal>();
-            foreach (var t in _killed)
-                if (!t.isFalling)
-                    available.Add(t);
+            foreach (var killedAnimal in _killed)
+                if (!killedAnimal.isFalling)
+                    available.Add(killedAnimal);
 
             KilledAnimal set = null;
             if (available.Count > 0)
                 set = available[0];
             else
             {
-                var kill = GameObject.Instantiate(animalKilledPrefab, killedBoard);
-                var kPiece = kill.GetComponent<KilledAnimal>();
-                set = kPiece;
-                _killed.Add(kPiece);
+                var kill = Instantiate(animalKilledPrefab, killedBoard);
+                var killedAnimal = kill.GetComponent<KilledAnimal>();
+                set = killedAnimal;
+                _killed.Add(killedAnimal);
             }
 
-            var animal = (int) (GetAnimalAtPoint(p) - 1);
+            var animal = (int) (GetAnimalAtPoint(point) - 1);
             if (set != null && animal >= 0 && animal < gameConfig.Animals.Length)
-                set.Initialize(gameConfig.Animals[animal], GetPositionFromPoint(p));
+                set.Initialize(gameConfig.Animals[animal], GetPositionFromPoint(point));
         }
 
         #region Matches
@@ -525,12 +547,27 @@ namespace Match3Game.Scripts.Behaviours.Board
 
             return available.Count <= 0 ? AnimalType.Empty : available[_random.Next(0, available.Count)];
         }
-
-        #endregion
-
+        
+        /// <summary>
+        /// Return a vector 2 position from some point
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns></returns>
         public static Vector2 GetPositionFromPoint(Point point)
         {
             return new Vector2(32 + (64 * point.x), -32 - (64 * point.y));
         }
+        
+        /// <summary>
+        /// Reset some animal slot
+        /// </summary>
+        /// <param name="animalSlot"></param>
+        public void ResetAnimalSlot(AnimalSlot animalSlot)
+        {
+            animalSlot.ResetPosition();
+            _update.Add(animalSlot);
+        }
+
+        #endregion
     }
 }
