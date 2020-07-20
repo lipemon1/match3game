@@ -1,4 +1,4 @@
-# this is Animal Rescue
+# Animal Rescue
 
 ## Play WebGL version [here](https://ramonferreiracode.itch.io/animal-rescue) 
 ## Download Android APK [here](https://drive.google.com/file/d/1ttKNjn8Fg_6l5ngJTMneOrd76v9FUZeB/view?usp=sharing) 
