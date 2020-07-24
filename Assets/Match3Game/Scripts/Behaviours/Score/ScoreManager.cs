@@ -1,7 +1,5 @@
 ﻿using System;
-using Boo.Lang;
 using Match3Game.Scripts.Model;
-using Match3Game.Scripts.Scriptables;
 using UnityEngine;
 
 namespace Match3Game.Scripts.Behaviours.Score
