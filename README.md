@@ -1,4 +1,7 @@
-# this is Animal Rescue
+# Animal Rescue
+
+## Play WebGL version [here](https://ramonferreiracode.itch.io/animal-rescue) 
+## Download Android APK [here](https://drive.google.com/file/d/1ttKNjn8Fg_6l5ngJTMneOrd76v9FUZeB/view?usp=sharing) 
 
 Don't remember what is a Match 3 Game?, enter here and you will remeber: [Match 3 Games](https://www.match3games.com)
 
