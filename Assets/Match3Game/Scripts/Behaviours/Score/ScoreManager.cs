@@ -51,19 +51,19 @@ namespace Match3Game.Scripts.Behaviours.Score
             switch (targetAnimal)
             {
                 case AnimalType.Cat:
-                    scorePayload.catResult.amount = amount;
+                    scorePayload.catResult.amount += amount;
                     break;
                 case AnimalType.Dog:
-                    scorePayload.dogResult.amount = amount;
+                    scorePayload.dogResult.amount += amount;
                     break;
                 case AnimalType.Pig:
-                    scorePayload.pigResult.amount = amount;
+                    scorePayload.pigResult.amount += amount;
                     break;
                 case AnimalType.Panda:
-                    scorePayload.pandaResult.amount = amount;
+                    scorePayload.pandaResult.amount += amount;
                     break;
                 case AnimalType.Frog:
-                    scorePayload.frogResult.amount = amount;
+                    scorePayload.frogResult.amount += amount;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(targetAnimal), targetAnimal, null);

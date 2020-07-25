@@ -1,4 +1,6 @@
-﻿using Match3Game.Scripts.Scriptables;
+﻿using Match3Game.Scripts.Behaviours.Score;
+using Match3Game.Scripts.Model;
+using Match3Game.Scripts.Scriptables;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,7 +17,7 @@ namespace Match3Game.Scripts.Behaviours.Slots
         [SerializeField] private Image img;
         [SerializeField] private GameConfig gameConfig;
 
-        public void Initialize(Sprite animalSprite, Vector2 start)
+        public void Initialize(Sprite animalSprite, Vector2 start, AnimalType animalType)
         {
             isFalling = true;
 
@@ -25,6 +27,9 @@ namespace Match3Game.Scripts.Behaviours.Slots
 
             img.sprite = animalSprite;
             rect.anchoredPosition = start;
+            
+            //Saving the match on ScoreManager
+            ScoreManager.Instance.ReceiveMatch(animalType, 1);
         }
 
         // Update is called once per frame

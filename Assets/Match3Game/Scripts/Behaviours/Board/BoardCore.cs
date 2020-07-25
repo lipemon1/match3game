@@ -72,9 +72,6 @@ namespace Match3Game.Scripts.Behaviours.Board
                 {
                     var volume = 0.7f + (connected.Count * gameConfig.AnimalPopMultiplier);
                     SfxPlayer.Instance.PlayPop(volume);
-                    
-                    //Saving the match on ScoreManager
-                    ScoreManager.Instance.ReceiveMatch(GetSlotAtPoint(connected.First()).animal, connected.Count);
 
                     var shakeMult = connected.Count * gameConfig.AnimalShakeMultiplier;
                     BoardShake.Instance.Shake(shakeMult);
@@ -363,9 +360,10 @@ namespace Match3Game.Scripts.Behaviours.Board
                 _killed.Add(killedAnimal);
             }
 
-            var animal = (int) (GetAnimalAtPoint(point) - 1);
-            if (set != null && animal >= 0 && animal < gameConfig.Animals.Length)
-                set.Initialize(gameConfig.Animals[animal], GetPositionFromPoint(point));
+            var animal = GetAnimalAtPoint(point);
+            var animalSprite = (int)(animal - 1);
+            if (set != null && animalSprite >= 0 && animalSprite < gameConfig.Animals.Length)
+                set.Initialize(gameConfig.Animals[(int)animalSprite], GetPositionFromPoint(point), animal);
         }
 
         #region Matches
