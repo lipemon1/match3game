@@ -43,8 +43,8 @@ namespace Match3Game.Scripts.Model
         Empty = 0,
         Cat = 1,
         Dog = 2,
-        Pig = 3,
+        Frog = 3,
         Panda = 4,
-        Frog = 5
+        Pig = 5
     }
 }

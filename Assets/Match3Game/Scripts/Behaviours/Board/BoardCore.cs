@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Match3Game.Scripts.Behaviours.Audio;
@@ -361,9 +362,9 @@ namespace Match3Game.Scripts.Behaviours.Board
             }
 
             var animal = GetAnimalAtPoint(point);
-            var animalSprite = (int)(animal - 1);
-            if (set != null && animalSprite >= 0 && animalSprite < gameConfig.Animals.Length)
-                set.Initialize(gameConfig.Animals[(int)animalSprite], GetPositionFromPoint(point), animal);
+            var animalSpriteIndex = (int) (animal - 1);
+            if (set != null && animalSpriteIndex >= 0 && animalSpriteIndex < gameConfig.Animals.Length)
+                set.Initialize(gameConfig.Animals[(int)animalSpriteIndex], GetPositionFromPoint(point), animal);
         }
 
         #region Matches
