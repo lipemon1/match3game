@@ -1,5 +1,6 @@
 ﻿using System;
 using Match3Game.Scripts.Model;
+using Match3Game.Scripts.View;
 using UnityEngine;
 
 namespace Match3Game.Scripts.Behaviours.Score
@@ -19,6 +20,7 @@ namespace Match3Game.Scripts.Behaviours.Score
         public static ScoreManager Instance { get; private set; }
 
         [SerializeField] private ScorePayload scorePayload;
+        [SerializeField] private ScoreResultView scoreView;
         
         private void Awake()
         {
@@ -38,6 +40,13 @@ namespace Match3Game.Scripts.Behaviours.Score
             scorePayload.frogResult.amount = 0;
             scorePayload.pandaResult.amount = 0;
             scorePayload.pigResult.amount = 0;
+
+            Invoke(nameof(ClearScoreOnScreen), 0.5f);
+        }
+
+        private void ClearScoreOnScreen()
+        {
+            scoreView.ShowResults(GetScorePayload());
         }
 
         /// <summary>
@@ -68,6 +77,8 @@ namespace Match3Game.Scripts.Behaviours.Score
                 default:
                     throw new ArgumentOutOfRangeException(nameof(targetAnimal), targetAnimal, null);
             }
+            
+            scoreView.ShowResults(GetScorePayload());
         }
 
         /// <summary>

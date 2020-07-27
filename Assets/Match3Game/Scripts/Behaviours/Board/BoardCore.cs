@@ -466,21 +466,21 @@ namespace Match3Game.Scripts.Behaviours.Board
         /// Add points to a reference list of points to save our current match
         /// </summary>
         /// <param name="points"></param>
-        /// <param name="add"></param>
-        private static void AddMatchedPoints(ref List<Point> points, IEnumerable<Point> add)
+        /// <param name="pointsToAdd"></param>
+        private static void AddMatchedPoints(ref List<Point> points, IEnumerable<Point> pointsToAdd)
         {
-            foreach (var p in add)
+            foreach (var point in pointsToAdd)
             {
                 var doAdd = true;
                 var i = 0;
                 for (; i < points.Count; i++)
                 {
-                    if (!points[i].Equals(p)) continue;
+                    if (!points[i].Equals(point)) continue;
                     doAdd = false;
                     break;
                 }
 
-                if (doAdd) points.Add(p);
+                if (doAdd) points.Add(point);
             }
         }
 
